@@ -1,24 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import {useState} from 'react';
+import TodoForm from './components/TodoForm'
+import TodoDisplay from './components/TodoDisplay'
 
 function App() {
+
+  const [todoList, setTodoList] = useState([]);
+
+  const addTodo = (newTodo) => {
+    setTodoList([...todoList, newTodo]);
+  }
+
+  const deleteTodo = (targetIdx) => {
+    setTodoList(todoList.filter( (eachTodo, idx) => idx !== targetIdx) )
+  }
+
+  const updateTodo = (targetIdx, targetBool) => {
+    setTodoList(todoList.map( (eachTodo, idx) => idx === targetIdx ? {...eachTodo, completed: targetBool} : eachTodo))
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <fieldset>
+      <legend>App.js</legend>
+
+      <div className='App container col m-auto w-25'>
+        <div className="row border border-3 rounded border-primary-subtle mb-4">
+          <TodoForm addTodo={addTodo} />
+        </div>
+        <div className="row border border-3 rounded border-warning-subtle">
+          <TodoDisplay todoList={todoList} updateTodo={updateTodo} deleteTodo={deleteTodo}/>
+        </div>
+      </div>
+    </fieldset>
   );
 }
 
